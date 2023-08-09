@@ -7,5 +7,5 @@ pragma solidity ^0.8.0;
 // calldata 适用于方法传参，而且该变量的值不能改变
 // storage  它的指针必须指向链上数据。使用完，链上数据将保存为最新状态
 contract StorageCalldataMemory {
-
+// 某个账户有10，可以转账10吗，手续费呢？？？
 }
