@@ -19,6 +19,8 @@
 
         <button id = "sendButton">Send</button>
 
+        <button id = "getBalanceButton">Get Balance</button>
+        <p><span id = "getBalanceButtonResult"></span></p>
 	</div>
 </body>
 <script>
@@ -84,6 +86,7 @@
             }
         }*/
 
+        //转账
         sendButton.onclick = async () => {
             // window.ethereum
             try {
@@ -108,8 +111,18 @@
                 console.error(error);
             }
         }
-        //主动调用
-        checkMetaMaskClient();
+
+        //查询余额
+        getBalanceButton.onclick = async () => {
+            ethereum.request({
+                method: 'eth_getBalance',
+                params: ['0x388Ea662EF2c223eC0B047D41Bf3c0f362142ad5', 'latest']
+            }).then((result) => {
+                getBalanceButtonResult.innerHTML = `${result} => ${parseInt(result, 16)} wei`;
+            }).catch((error) => {
+                console.error(error);
+            })
+        }
 
         getAccountsButton.onclick = async () => {
             console.info("---------->getAccount");
@@ -120,7 +133,20 @@
                 console.error(error);
             }
         }
+
+        ethereum.on('accountsChanged', function (accounts) {
+            console.log('accountsChanged');
+        })
+
+        ethereum.on('chainChanged', function (accounts) {
+            console.log('chainChanged');
+            window.location.reload();
+        })
+
+        //主动触发调用
+        checkMetaMaskClient();
     }
+
     window.addEventListener('DOMContentLoaded', initialize);
 </script>
 </html>
