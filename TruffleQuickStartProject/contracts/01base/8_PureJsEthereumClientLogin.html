@@ -65,7 +65,7 @@
             }
         }
 
-        //
+        /*window.web3 废弃方法
         sendButton.onclick = async () => {
             console.info("---------->getAccount");
             try {
@@ -76,11 +76,36 @@
                     value: 1000000000000000, //wei
                     gas: 21000,
                     gasPrice: 200000000
-                }), (result) => {
+                }, (result) => {
                     console.log(result);
-                }
-            } catch (errorMsg) {
-                console.error(errorMsg);
+                })
+            } catch (error) {
+                console.error(error);
+            }
+        }*/
+
+        sendButton.onclick = async () => {
+            // window.ethereum
+            try {
+                const accounts = await ethereum.request({method : 'eth_requestAccounts'});
+                console.info("---------->getAccount" + JSON.stringify(accounts));
+
+                const transactionHash = await ethereum.request({
+                    method: 'eth_sendTransaction',
+                    params: [
+                    {
+                        to: '0x388Ea662EF2c223eC0B047D41Bf3c0f362142ad5',
+                        from: accounts[0],
+                        value: '1000000000000', //wei
+                        gas: '21000',
+                        gasPrice: '200000000'
+                    },
+                    ],
+                });
+                // Handle the result
+                console.log(transactionHash);
+            } catch (error) {
+                console.error(error);
             }
         }
         //主动调用
