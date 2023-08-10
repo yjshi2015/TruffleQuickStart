@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<!--步骤
+    1、在terminal中进入该文件所在路径
+    2、执行python -m http.server，发布web服务
+    3、访问该页面，可唤起Metamask钱包
+-->
+<html>
+<head>
+<meta charset="utf-8">
+<title>调用区块链钱包</title>
+</head>
+<body>
+	<div>
+		<h5>Account:<span id = "accountSpan"></span></h5>
+		<h5>Network:<span id = "networkSpan"></span></h5>
+		<h5>ChainId:<span id = "chainIdSpan"></span></h5>
+        <button id = "getAccountsButton">Get Account Button</button>
+        <p><span id = "getAccountsButtonResult"></span></p>
+
+        <button id = "sendButton">Send</button>
+
+	</div>
+</body>
+<script>
+    const initialize = () => {
+        console.info("---------->initialize");
+        const isMetaMaskIntalled = () => {
+            console.info("---------->isMetaMaskIntalled");
+            const {ethereum} = window;
+            if(typeof ethereum === 'undefined') {
+                return false;
+            }
+            return Boolean(ethereum && ethereum.isMetaMask);
+        }
+
+        const getAccount = async () => {
+            console.info("---------->getAccount");
+            try {
+                const account = await ethereum.request({method : 'eth_requestAccounts'});
+                accountSpan.innerHTML = account;
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        const getNetworkAndChainId = async () => {
+            console.info("---------->getNetworkAndChainId");
+            try {
+                const chainId = await ethereum.request({method: 'eth_chainId'});
+                chainIdSpan.innerHTML = chainId;
+                const networkId = await ethereum.request({method: 'net_version'});
+                networkSpan.innerHTML = networkId;
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        const checkMetaMaskClient = async ()=> {
+            console.info("---------->checkMetaMaskClient");
+            if(!isMetaMaskIntalled()) {
+                alert('please install metamask wallet');
+            } else {
+                getNetworkAndChainId();
+                getAccount();
+            }
+        }
+
+        //
+        sendButton.onclick = async () => {
+            console.info("---------->getAccount");
+            try {
+                const accounts = await ethereum.request({method : 'eth_requestAccounts'});
+                web3.eth.sendTransaction({
+                    from: accounts[0],
+                    to:'0x388Ea662EF2c223eC0B047D41Bf3c0f362142ad5',
+                    value: 1000000000000000, //wei
+                    gas: 21000,
+                    gasPrice: 200000000
+                }), (result) => {
+                    console.log(result);
+                }
+            } catch (errorMsg) {
+                console.error(errorMsg);
+            }
+        }
+        //主动调用
+        checkMetaMaskClient();
+
+        getAccountsButton.onclick = async () => {
+            console.info("---------->getAccount");
+            try {
+                const account = await ethereum.request({method : 'eth_accounts'});
+                getAccountsButtonResult.innerHTML = account;
+            } catch (error) {
+                console.error(error);
+            }
+        }
+    }
+    window.addEventListener('DOMContentLoaded', initialize);
+</script>
+</html>
