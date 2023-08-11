@@ -1,4 +1,5 @@
 .gitkeep
+*.json
 # Logs
 logs
 *.log
