@@ -19,10 +19,11 @@
 
     <script type="text/babel">
         const app = document.getElementById("app");
-        function Header() {
-            return (<h1>https://github.com👏🏻</h1>);
+        function Header(Props) {
+            return (<h1>{Props.contents} age:{Props.age}</h1>);
         }
 
+        //普通的组件嵌套
         function HomePage() {
             return (
                 <div>
@@ -31,7 +32,23 @@
                 </div>
             )
         }
-        ReactDOM.render(<HomePage />, app);
+
+        //组件嵌套+传参
+        function HomePage2() {
+            const names = ['SYJ', 'SDZ', 'ZRM'];
+            return (
+                <div>
+                    Hello World :
+                    <ul>
+                        {names.map(name => (
+                            <li key={name}>{name}</li>
+                        ))}
+                    </ul>
+                    <Header contents = "https://github.com👏🏻" age="100"/>
+                </div>
+            )
+        }
+        ReactDOM.render(<HomePage2 />, app);
     </script>
 </body>
 </html>
