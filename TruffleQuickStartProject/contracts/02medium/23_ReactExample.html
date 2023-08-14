@@ -1,0 +1,37 @@
+<!-- index.html-->
+<html>
+<body>
+    <div id="app">Hello World!</div>
+    <!--传统的页面渲染方式
+    <script type="text/javascript">
+        const app = document.getElementById('app');  //获取div对象 
+        const header = document.createElement('h1'); //<h1></h1>
+        const headerContent = document.createTextNode('https://github.com👏🏻')  //https://github.com
+        header.appendChild(headerContent);  //<h1>https:github.com</h1>
+        app.appendChild(header); //<div id="app">Hello World!<h1>https:github.com</h1></div>
+    </script>
+    -->
+
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+
+    <script type="text/babel">
+        const app = document.getElementById("app");
+        function Header() {
+            return (<h1>https://github.com👏🏻</h1>);
+        }
+
+        function HomePage() {
+            return (
+                <div>
+                    Hello World
+                    <Header />
+                </div>
+            )
+        }
+        ReactDOM.render(<HomePage />, app);
+    </script>
+</body>
+</html>
